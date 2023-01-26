@@ -6,7 +6,7 @@ class File_modifier:
 
     def add_data(self, name, day, month, year, status):
         f = open(self.filename, "a")
-        f.write(str(name)+";"+str(day)+"/"+str(month)+";"+str(status)+"\n")
+        f.write(str(name)+";"+str(day)+"/"+str(month)+"/"+str(year)+";"+str(status)+"\n")
         f.close()
 
     def remove_data(self, name, day, month, year, status):
@@ -14,7 +14,7 @@ class File_modifier:
             lines = f.readlines()
         with open(self.filename, "w") as f:
             for line in lines:
-                if line.strip("\n") != str(name)+";"+str(day)+"/"+str(month)+";"+str(status):
+                if line.strip("\n") != str(name)+";"+str(day)+"/"+str(month)+"/"+str(year)+";"+str(status):
                     f.write(line)
 
 if __name__ == "__main__":
