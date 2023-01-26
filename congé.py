@@ -59,7 +59,7 @@ class Conge:
         if len(congés) == 0:
             print("Pas de congés ou de maladie.")
         else:
-            if congés.shape == (3,):
+            if congés.shape == (4,):
                 congés = np.array([congés])
             #print(congés)
             for congé in congés:

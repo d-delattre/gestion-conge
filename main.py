@@ -38,7 +38,7 @@ def main():
         elif event == "-ADD-":
             try:
                 dd, mm, yy = values["-DATE-"].split('/')
-                fm.add_data(values["-NAME-"], dd, mm, yy, values["-TYPE-"])
+                fm.add_data(values["-NAME-"], dd, mm, yy, values["-TYPE-"], values["-DAYS-"])
                 plt.close('all')
                 fig = c.fig_maker(c.display_mmatrix())
                 vi.draw_figure(fig)
@@ -49,7 +49,7 @@ def main():
         elif event == "-REMOVE-":
             try:
                 dd, mm, yy = values["-DATE-"].split('/')
-                fm.remove_data(values["-NAME-"], dd, mm, yy, values["-TYPE-"])
+                fm.remove_data(values["-NAME-"], dd, mm, yy, values["-TYPE-"], values["-DAYS-"])
                 plt.close('all')
                 fig = c.fig_maker(c.display_mmatrix())
                 vi.draw_figure(fig)
