@@ -1,7 +1,7 @@
 from congé import Conge
 from data_modifier import File_modifier
 from view import View
-from datetime import date
+from datetime import date, timedelta
 import time
 
 import PySimpleGUI as sg
@@ -38,7 +38,16 @@ def main():
         elif event == "-ADD-":
             try:
                 dd, mm, yy = values["-DATE-"].split('/')
-                fm.add_data(values["-NAME-"], dd, mm, yy, values["-TYPE-"], values["-DAYS-"])
+                i = 0
+                while i <= values["-DAYS-"]+1:
+                    d = date(int(yy), int(mm), int(dd)) + timedelta(days=i)
+                    newd = d.day
+                    newm = d.month
+                    newy = d.year
+                    cc = Conge(int(newy), int(newm))
+                    if cc.isweekend(newd)==False:
+                        fm.add_data(values["-NAME-"], newd, newm, newy, values["-TYPE-"])
+                    i=i+1
                 plt.close('all')
                 fig = c.fig_maker(c.display_mmatrix())
                 vi.draw_figure(fig)
@@ -49,7 +58,16 @@ def main():
         elif event == "-REMOVE-":
             try:
                 dd, mm, yy = values["-DATE-"].split('/')
-                fm.remove_data(values["-NAME-"], dd, mm, yy, values["-TYPE-"], values["-DAYS-"])
+                i = 0
+                while i <= values["-DAYS-"]+1:
+                    d = date(int(yy), int(mm), int(dd)) + timedelta(days=i)
+                    newd = d.day
+                    newm = d.month
+                    newy = d.year
+                    cc = Conge(int(newy), int(newm))
+                    if cc.isweekend(newd)==False:
+                        fm.remove_data(values["-NAME-"], newd, newm, newy, values["-TYPE-"])
+                    i+=1
                 plt.close('all')
                 fig = c.fig_maker(c.display_mmatrix())
                 vi.draw_figure(fig)

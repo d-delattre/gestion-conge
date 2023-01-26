@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import os
-import datetime
+from datetime import date
 import time
 import calendar
 from io import BytesIO
@@ -25,8 +25,7 @@ class Conge:
             "accouchement" : 9,
             "quarantaine" : 10
         }
-        self.saturdays = np.array(calendar.monthcalendar(year, month))[:,5]
-        self.sundays = np.array(calendar.monthcalendar(year, month))[:,6]
+
         self.name_list = np.loadtxt('./.personel.txt', dtype="str")
         self.names = {}
         for i in range(len(self.name_list)):
@@ -46,6 +45,17 @@ class Conge:
          ]
 
 
+    def isweekend(self, d):
+        da = date(self.year, self.month, d)
+        if da.weekday() == 5:
+            out = True
+        elif da.weekday() == 6:
+            out = True
+        else:
+            out = False
+        return out
+
+
     def display_mmatrix(self):
         self.ndays = int(calendar.month(self.year, self.month)[-3:-1])
 
@@ -59,7 +69,7 @@ class Conge:
         if len(congés) == 0:
             print("Pas de congés ou de maladie.")
         else:
-            if congés.shape == (4,):
+            if congés.shape == (3,):
                 congés = np.array([congés])
             #print(congés)
             for congé in congés:
@@ -68,10 +78,8 @@ class Conge:
 
         #Modifie la matrice d'affichage pour mettre les weekends en couleur.
         for i in np.arange(self.ndays):
-            if i in self.saturdays and (i-1)>=0:
-                mmatrix[:,i-1] = self.state['weekend']
-            elif i in self.sundays and (i-1)>=0:
-                mmatrix[:,i-1] = self.state['weekend']
+            if self.isweekend(i+1):
+                mmatrix[:, i] = self.state["weekend"]
 
         return mmatrix
 
