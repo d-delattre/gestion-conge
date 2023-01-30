@@ -38,8 +38,8 @@ def main():
         elif event == "-ADD-":
             try:
                 dd, mm, yy = values["-DATE-"].split('/')
-                i = 0
-                while i <= values["-DAYS-"]+1:
+                i, j = (0,0)
+                while j < values["-DAYS-"]:
                     d = date(int(yy), int(mm), int(dd)) + timedelta(days=i)
                     newd = d.day
                     newm = d.month
@@ -47,6 +47,7 @@ def main():
                     cc = Conge(int(newy), int(newm))
                     if cc.isweekend(newd)==False:
                         fm.add_data(values["-NAME-"], newd, newm, newy, values["-TYPE-"])
+                        j+=1
                     i=i+1
                 plt.close('all')
                 fig = c.fig_maker(c.display_mmatrix())
@@ -58,8 +59,8 @@ def main():
         elif event == "-REMOVE-":
             try:
                 dd, mm, yy = values["-DATE-"].split('/')
-                i = 0
-                while i <= values["-DAYS-"]+1:
+                i, j = (0, 0)
+                while j < values["-DAYS-"]:
                     d = date(int(yy), int(mm), int(dd)) + timedelta(days=i)
                     newd = d.day
                     newm = d.month
@@ -67,6 +68,7 @@ def main():
                     cc = Conge(int(newy), int(newm))
                     if cc.isweekend(newd)==False:
                         fm.remove_data(values["-NAME-"], newd, newm, newy, values["-TYPE-"])
+                        j+=1
                     i+=1
                 plt.close('all')
                 fig = c.fig_maker(c.display_mmatrix())
