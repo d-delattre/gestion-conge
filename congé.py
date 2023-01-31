@@ -58,6 +58,21 @@ class Conge:
             out = False
         return out
 
+    def remaining_days(self):
+        out = np.copy(self.f['JoursRestant'])
+        self.congés = np.loadtxt("./.congé.txt", dtype=[("Names", "U12"), ("Date", "U12"), ("Status", "U12")],delimiter=";")
+        if self.congés.size == 0:
+            print("Pas de congés ou de maladie.")
+        else:
+            if self.congés.size == 1:
+                self.congés = np.array([self.congés])
+            for congé in self.congés:
+                if int(congé['Date'].split('/')[1]) <= self.month and int(congé['Date'].split('/')[2]) == self.year and congé['Status']=='congé':
+                    out[self.names[congé['Names']]] -= 1
+        print(out, self.f['JoursRestant'])
+        return out
+
+
 
     def display_mmatrix(self):
         self.ndays = int(calendar.month(self.year, self.month)[-3:-1])
@@ -66,14 +81,14 @@ class Conge:
         mmatrix = np.zeros((len(self.name_list), self.ndays))
 
         #Charge un fichier contenant les congés et modifie la matrice d'affichage.
-        congés = np.loadtxt("./.congé.txt", dtype=[("Names", "U12"), ("Date", "U12"), ("Status", "U12")],delimiter=";")
+        self.congés = np.loadtxt("./.congé.txt", dtype=[("Names", "U12"), ("Date", "U12"), ("Status", "U12")],delimiter=";")
 
-        if congés.size == 0:
+        if self.congés.size == 0:
             print("Pas de congés ou de maladie.")
         else:
-            if congés.size == 1:
-                congés = np.array([congés])
-            for congé in congés:
+            if self.congés.size == 1:
+                self.congés = np.array([self.congés])
+            for congé in self.congés:
                 if int(congé['Date'].split('/')[1]) == self.month and int(congé['Date'].split('/')[2]) == self.year:
                     mmatrix[self.names[congé["Names"]], int(congé['Date'].split('/')[0])-1] = self.state[congé['Status']]
 
@@ -107,6 +122,13 @@ class Conge:
         ax.set_yticklabels(self.name_list)
         #ax.grid()
         ax.legend()
+        ax2 = ax.secondary_yaxis('right')
+        rd = self.remaining_days()
+        ax2.set_yticks(np.arange(rd.size))
+        ax2.set_yticklabels(rd)
+        ax.set_xlabel('Jours')
+        ax.set_ylabel('Noms')
+        ax2.set_ylabel('Nombre des jours de congés restant')
 
         # Rotation et alignement des labels.
         plt.setp(ax.get_xticklabels(), rotation=0, ha="center",

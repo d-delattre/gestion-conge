@@ -27,7 +27,7 @@ class View:
             #[sq.Text("Au :", size=(10, 1), font="Lucida", text_color="black"), sg.InputText(key='-END-'), sg.CalendarButton("Select Date", close_when_date_chosen=True, target="Date", format='%d/%m/%Y', size=(10,1))],
             [sg.Text("Durée :", size=(5, 1), font="Lucida", text_color="black"), sg.Combo([0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], default_value=1, key="-DAYS-"), sg.Text("jour(s)", size=(10, 1), font="Lucida", text_color="black")],
             #[],
-            [sg.Text("Type: ", size=(5, 1), font="Lucida", text_color="black"), sg.Combo(["congé", "malade","weekend","récup","récup de l'année précédente","jour férié","quatre cinquième","convention","accouchement","quarantaine"], default_value="congé", size=(10,1), key='-TYPE-')],
+            [sg.Text("Type: ", size=(5, 1), font="Lucida", text_color="black"), sg.Combo(["congé", "malade","récup","récup de l'année précédente","jour férié","quatre cinquième","convention","accouchement","quarantaine"], default_value="congé", size=(10,1), key='-TYPE-')],
             #[],
             [sg.Button("Ajouter", key='-ADD-'), sg.Button("Supprimer", key='-REMOVE-')]
         ]
