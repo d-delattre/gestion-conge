@@ -44,6 +44,8 @@ class Conge:
          'purple'     #10
          ]
 
+        self.month_list = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"]
+
 
     def isweekend(self, d):
         da = date(self.year, self.month, d)
@@ -117,7 +119,7 @@ class Conge:
         #                       ha="center", va="center", color="w")
 
         #titre et commandes d'affichage
-        ax.set_title("Planning congés/maladies du mois de ")
+        ax.set_title("Congés/maladies du mois de "+self.month_list[self.month-1])
         fig.tight_layout()
         #window.write_event_value('-THREAD-', 'done.')
         #time.sleep(1)
