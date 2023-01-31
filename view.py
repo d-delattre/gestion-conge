@@ -16,7 +16,8 @@ class View:
             [sg.Image(key='-IMAGE-', size=(5000, 3000), expand_x=True, expand_y=True)]
         ]
 
-        self.name_list = np.loadtxt('./.personel.txt', dtype="str")
+        self.f = np.loadtxt('./.personel.txt', dtype=[('Names', "U12"), ("JoursRestant", "i4")], delimiter=";")
+        self.name_list = self.f['Names']
 
         parameters = [
             [sg.Text("Nom :", size=(5,1), font="Lucida", text_color="black"), sg.Combo([name for name in self.name_list], key='-NAME-')],

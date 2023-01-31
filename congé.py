@@ -26,7 +26,8 @@ class Conge:
             "quarantaine" : 10
         }
 
-        self.name_list = np.loadtxt('./.personel.txt', dtype="str")
+        self.f = np.loadtxt('./.personel.txt', dtype=[('Names', "U12"), ("JoursRestant", "i4")], delimiter=";")
+        self.name_list = self.f['Names']
         self.names = {}
         for i in range(len(self.name_list)):
             self.names[self.name_list[i]] = i
@@ -65,18 +66,16 @@ class Conge:
         mmatrix = np.zeros((len(self.name_list), self.ndays))
 
         #Charge un fichier contenant les congés et modifie la matrice d'affichage.
-        congés = np.loadtxt("./.congé.txt", dtype="U",delimiter=";")
-        #print(np.shape(congés))
-        #print(congés.shape)
-        if len(congés) == 0:
+        congés = np.loadtxt("./.congé.txt", dtype=[("Names", "U12"), ("Date", "U12"), ("Status", "U12")],delimiter=";")
+
+        if congés.size == 0:
             print("Pas de congés ou de maladie.")
         else:
-            if congés.shape == (3,):
+            if congés.size == 1:
                 congés = np.array([congés])
-            #print(congés)
             for congé in congés:
-                if int(congé[1].split('/')[1]) == self.month:
-                    mmatrix[self.names[congé[0]], int(congé[1].split('/')[0])-1] = self.state[congé[2]]
+                if int(congé['Date'].split('/')[1]) == self.month and int(congé['Date'].split('/')[2]) == self.year:
+                    mmatrix[self.names[congé["Names"]], int(congé['Date'].split('/')[0])-1] = self.state[congé['Status']]
 
         #Modifie la matrice d'affichage pour mettre les weekends en couleur.
         for i in np.arange(self.ndays):
@@ -107,6 +106,7 @@ class Conge:
         ax.set_xticklabels(np.arange(self.ndays)+1)
         ax.set_yticklabels(self.name_list)
         #ax.grid()
+        ax.legend()
 
         # Rotation et alignement des labels.
         plt.setp(ax.get_xticklabels(), rotation=0, ha="center",
