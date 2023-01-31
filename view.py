@@ -13,7 +13,7 @@ class View:
         image_viewer = [
             [sg.Text("Choisir la date ",size=(10,1), font ="Lucida",text_color="black"), sg.InputText(key='-DISPLAY_DATE-', enable_events=True), sg.CalendarButton("Select Date", close_when_date_chosen=True, target="-DISPLAY_DATE-", format='%m/%Y', size=(10,1))],
             #[sg.Text(key="-PATH-",size=(60,1), font ="Lucida", background_color = "white",text_color="black")],
-            [sg.Image(key='-IMAGE-', size=(5000, 3000), expand_x=True, expand_y=True)]
+            [sg.Image(key='-IMAGE-', size=(5000, 100), expand_x=True, expand_y=True)]
         ]
 
         self.f = np.loadtxt('./.personel.txt', dtype=[('Names', "U12"), ("JoursRestant", "i4")], delimiter=";")

@@ -69,7 +69,6 @@ class Conge:
             for congé in self.congés:
                 if int(congé['Date'].split('/')[1]) <= self.month and int(congé['Date'].split('/')[2]) == self.year and congé['Status']=='congé':
                     out[self.names[congé['Names']]] -= 1
-        print(out, self.f['JoursRestant'])
         return out
 
 

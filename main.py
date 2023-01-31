@@ -32,7 +32,7 @@ def main():
             month, year = values['-DISPLAY_DATE-'].split('/')
             c = Conge(int(year), int(month))
             fig = c.fig_maker(c.display_mmatrix())
-            fig_agg = vi.draw_figure(fig)
+            vi.draw_figure(fig)
             vi.window.Refresh()
 
         elif event == "-ADD-":
