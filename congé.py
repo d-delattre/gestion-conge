@@ -15,15 +15,16 @@ class Conge:
         self.month = month
         self.state = {
             "congé" : 1,
-            "malade" : 2,
+            "maladie" : 2,
             "weekend" : 3,
             "récup" : 4,
-            "récup de " + str(int(self.year)-1) : 5,
+            "récup de l'année précédente" : 5,
             "jour férié" : 6,
             "quatre cinquième" : 7,
             "convention" : 8,
             "accouchement" : 9,
-            "quarantaine" : 10
+            "quarantaine" : 10, 
+            "demi jour de congé" : 11
         }
 
         self.f = np.loadtxt('./.personel.txt', dtype=[('Names', "U12"), ("JoursRestant", "i4")], delimiter=";")
@@ -42,7 +43,8 @@ class Conge:
          'yellow',    #7
          'darkgreen', #8
          'lightblue', #9
-         'purple'     #10
+         'purple',    #10
+         'lightgreen'   #11
          ]
 
         self.month_list = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"]
@@ -60,15 +62,20 @@ class Conge:
 
     def remaining_days(self):
         out = np.copy(self.f['JoursRestant'])
-        self.congés = np.loadtxt("./.congé.txt", dtype=[("Names", "U12"), ("Date", "U12"), ("Status", "U12")],delimiter=";")
+        self.congés = np.loadtxt("./.congé.txt", dtype=[("Names", "U12"), ("Date", "U12"), ("Status", "U32")],delimiter=";")
         if self.congés.size == 0:
             print("Pas de congés ou de maladie.")
         else:
             if self.congés.size == 1:
                 self.congés = np.array([self.congés])
             for congé in self.congés:
-                if int(congé['Date'].split('/')[1]) <= self.month and int(congé['Date'].split('/')[2]) == self.year and congé['Status']=='congé':
-                    out[self.names[congé['Names']]] -= 1
+                if int(congé['Date'].split('/')[1]) <= self.month and int(congé['Date'].split('/')[2]) == self.year:
+                    if congé['Status']=='congé':
+                        out[self.names[congé['Names']]] -= 1
+                    if congé['Status']=='demi jour de congé':
+                        out = out*1.
+                        out[self.names[congé['Names']]] -= 1./2
+                        print(out)
         return out
 
 
@@ -80,7 +87,7 @@ class Conge:
         mmatrix = np.zeros((len(self.name_list), self.ndays))
 
         #Charge un fichier contenant les congés et modifie la matrice d'affichage.
-        self.congés = np.loadtxt("./.congé.txt", dtype=[("Names", "U12"), ("Date", "U12"), ("Status", "U12")],delimiter=";")
+        self.congés = np.loadtxt("./.congé.txt", dtype=[("Names", "U12"), ("Date", "U12"), ("Status", "U32")],delimiter=";")
 
         if self.congés.size == 0:
             print("Pas de congés ou de maladie.")
@@ -140,7 +147,7 @@ class Conge:
         #                       ha="center", va="center", color="w")
 
         #titre et commandes d'affichage
-        ax.set_title("Congés/maladies du mois de "+self.month_list[self.month-1])
+        ax.set_title("Congés/maladies du mois de "+self.month_list[self.month-1]+" "+str(self.year))
         fig.tight_layout()
         #window.write_event_value('-THREAD-', 'done.')
         #time.sleep(1)
