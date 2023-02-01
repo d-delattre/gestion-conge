@@ -76,6 +76,8 @@ class Conge:
                         out = out*1.
                         out[self.names[congé['Names']]] -= 1./2
                         print(out)
+            if np.array_equal(out, out.astype('int32')):
+                out = out.astype('int32')
         return out
 
 
